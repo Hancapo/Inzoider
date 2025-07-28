@@ -12,7 +12,7 @@ website = "https://github.com/Hancapo/Inzoider"
 
 license = ["SPDX:MIT",]
 
-platforms = ["windows-x64",]
+platforms = ["windows-x64","linux-x64"]
 
 [permissions]
 files = "Export Folders and Binary Files (.BMP, .JPG, .JSON, .GLB) to disk"
