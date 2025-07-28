@@ -38,7 +38,7 @@ def convert_image_to_format(path: str, img: Image, format: str, name: str, quali
     
 def create_folder(name: str) -> str:
     """Creates a folder using the hashed name from the object and current time in the export directory."""
-    path = bpy.path.abspath(f"//{name.upper()}")
+    path = bpy.path.abspath(f"//{name}")
     if not os.path.exists(path):
         os.makedirs(path)
     return path
@@ -92,7 +92,7 @@ def process_item(self, scene, item):
         prefs = get_addon_prefs()
 
         hash_name = generate_md5_from_str(f"{item.title}{current_time_str()}")
-        new_folder = create_folder(prefs.my3dprinter_path + f"/{hash_name}")
+        new_folder = create_folder(prefs.my3dprinter_path + f"/{hash_name.upper()}")
         if item.type == 'Character':
             change_visual_rotation_to_obj(item.mesh, True)
             export_obj_as_glb(item.mesh, new_folder, hash_name.upper())
