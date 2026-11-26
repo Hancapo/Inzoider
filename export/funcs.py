@@ -24,17 +24,18 @@ def current_time_str() -> str:
 
 def convert_image_to_format(path: str, img: Image, format: str, name: str, quality: int = 95) -> str:
     """Converts the selected thumbnail to another supported format."""
-    scene = bpy.context.scene
-    config = scene.render.image_settings
-    config.file_format = format
-    config.quality = quality
-    
     extension = 'jpg' if format == 'JPEG' else 'bmp'
     
+    # Save a temporary copy so the source image and the scene's render settings stay untouched,
+    # and no view transform (e.g. AgX) gets baked into the thumbnail.
+    tmp = img.copy()
     try:
-        img.save_render(f"{path}/{name}.{extension}", scene=scene)
+        tmp.file_format = format
+        tmp.save(filepath=f"{path}/{name}.{extension}", quality=quality)
     except Exception as e:
         print(f"Error converting image: {str(e)}")
+    finally:
+        bpy.data.images.remove(tmp)
     
 def create_folder(name: str) -> str:
     """Creates a folder using the hashed name from the object and current time in the export directory."""
@@ -47,7 +48,7 @@ def export_obj_as_glb(obj: Object, filepath: str, name: str) -> None:
     """Exports an object as a GLB file."""
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
-    bpy.ops.export_scene.gltf(filepath=filepath + f"/{name}.glb", use_selection=True, export_animations=False, export_draco_mesh_compression_enable=False, export_format='GLB')
+    bpy.ops.export_scene.gltf(filepath=filepath + f"/{name}.glb", use_selection=True, use_active_scene=True, export_animations=False, export_draco_mesh_compression_enable=False, export_format='GLB')
     obj.select_set(False)
 
 def change_visual_rotation_to_obj(obj: Object, apply: bool) -> None:

@@ -20,7 +20,7 @@ class CRAFT_UL_list(bpy.types.UIList):
 
 class InzoiderCraftExport_PT_Panel(bpy.types.Panel):
     bl_label = "3D Printer"
-    bl_idname = "InzoiderCraftExport_PT_Panel"
+    bl_idname = "INZOIDER_PT_craft_export"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = 'Inzoider'
