@@ -13,4 +13,4 @@ website = "https://github.com/Hancapo/Inzoider"
 license = ["SPDX:MIT",]
 
 [permissions]
-files = "Export Folders and Binary Files (.BMP, .JPG, .JSON, .GLB) to disk"
+files = "Export craft folders and files (.BMP, .JPG, .JSON, .GLB) to disk"
