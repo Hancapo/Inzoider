@@ -71,7 +71,10 @@ class AddCraftItem_OT_Operator(bpy.types.Operator):
             
     def execute(self, context):
         
-        if self.craft_title == "":
+        obj = context.selected_objects[0]
+        title = obj.name if self.craft_use_obj_name_as_title else self.craft_title.strip()
+        
+        if not title:
             self.report({'ERROR'}, "Please enter a title for the craft item")
             return {'CANCELLED'}
         
@@ -82,13 +85,9 @@ class AddCraftItem_OT_Operator(bpy.types.Operator):
         scene = context.scene
         item = scene.obj_craft_list.add()
         
-        if self.craft_use_obj_name_as_title:
-            item.title = context.active_object.name
-        else:
-            item.title = self.craft_title
-            
+        item.title = title
         item.description = self.craft_description
-        item.mesh = context.selected_objects[0]
+        item.mesh = obj
         item.type = self.craft_type
         
         if context.window_manager.current_craft_texture_name:
@@ -105,7 +104,7 @@ class AddCraftItem_OT_Operator(bpy.types.Operator):
         
         layout.prop(self, "craft_use_obj_name_as_title")
         if self.craft_use_obj_name_as_title:
-            layout.label(text=f"Title: {context.active_object.name}", icon_value=get_icon("format_title"))
+            layout.label(text=f"Title: {context.selected_objects[0].name}", icon_value=get_icon("format_title"))
         else:
             layout.prop(self, "craft_title", icon_value=get_icon("format_title"))
             
